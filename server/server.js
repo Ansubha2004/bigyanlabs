@@ -2,12 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import formroute from "./routes/formroute.js";
+import cookieParser from "cookie-parser";
+import Authrouter from "./routes/Authrouter.js"
+import Datarouter from './routes/Datarouter.js'
+
 
 
 dotenv.config();
 const app=express();
 
 app.use(express.json());
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
@@ -22,6 +27,8 @@ app.get("/",(req,res)=>{
 })
 
 app.use('/',formroute);
+app.use("/",Authrouter)
+app.use('/',Datarouter);
 
 app.all('*',(req,res)=>{
     return res.json({success:false,message:"Error in routes"});
